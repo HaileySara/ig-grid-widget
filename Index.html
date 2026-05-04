@@ -4,739 +4,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IG Grid Preview</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<title>IG Grid Widget</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-–bg: #faf9f7;
-–surface: #ffffff;
-–border: #ede9e3;
-–border-light: #f5f2ee;
-–text-primary: #1a1714;
-–text-secondary: #7a746d;
-–text-muted: #b8b0a8;
-–accent: #c9a96e;
-–accent-light: #f7f0e6;
-–error: #e07070;
-–success: #7ab899;
-–shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-–shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-–radius: 12px;
-–radius-sm: 8px;
-}
-
-html, body {
-height: 100%;
-background: var(–bg);
-font-family: ‘DM Sans’, sans-serif;
-color: var(–text-primary);
-font-size: 14px;
-line-height: 1.5;
-}
-
-/* ── SETUP SCREEN ─────────────────────────────── */
-#setup-screen {
-min-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 24px;
-background: var(–bg);
-}
-
-.setup-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 20px;
-padding: 40px;
-max-width: 480px;
-width: 100%;
-box-shadow: var(–shadow-md);
-}
-
-.setup-logo {
-width: 40px;
-height: 40px;
-background: linear-gradient(135deg, #f9a94b, #e1306c, #833ab4);
-border-radius: 12px;
-margin-bottom: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-.setup-logo svg { width: 22px; height: 22px; }
-
-.setup-title {
-font-size: 22px;
-font-weight: 500;
-letter-spacing: -0.3px;
-margin-bottom: 6px;
-}
-
-.setup-title em {
-font-family: ‘Playfair Display’, serif;
-font-style: italic;
-color: var(–accent);
-}
-
-.setup-subtitle {
-color: var(–text-secondary);
-margin-bottom: 32px;
-font-size: 13.5px;
-}
-
-.field-group { margin-bottom: 18px; }
-
-label {
-display: block;
-font-size: 12px;
-font-weight: 500;
-letter-spacing: 0.4px;
-text-transform: uppercase;
-color: var(–text-secondary);
-margin-bottom: 7px;
-}
-
-input[type=“text”], input[type=“password”] {
-width: 100%;
-padding: 11px 14px;
-border: 1.5px solid var(–border);
-border-radius: var(–radius-sm);
-background: var(–bg);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 13.5px;
-color: var(–text-primary);
-transition: border-color 0.2s, box-shadow 0.2s;
-outline: none;
-}
-
-input:focus {
-border-color: var(–accent);
-box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
-}
-
-.field-hint {
-font-size: 11.5px;
-color: var(–text-muted);
-margin-top: 5px;
-line-height: 1.4;
-}
-
-.field-hint a { color: var(–accent); text-decoration: none; }
-.field-hint a:hover { text-decoration: underline; }
-
-.btn-primary {
-width: 100%;
-padding: 13px;
-background: var(–text-primary);
-color: white;
-border: none;
-border-radius: var(–radius-sm);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
-transition: background 0.2s, transform 0.1s;
-margin-top: 8px;
-letter-spacing: 0.1px;
-}
-
-.btn-primary:hover { background: #2d2926; }
-.btn-primary:active { transform: scale(0.99); }
-.btn-primary:disabled { background: var(–text-muted); cursor: not-allowed; }
-
-.setup-divider {
-border: none;
-border-top: 1px solid var(–border-light);
-margin: 28px 0;
-}
-
-.setup-note {
-background: var(–accent-light);
-border: 1px solid rgba(201,169,110,0.25);
-border-radius: var(–radius-sm);
-padding: 12px 14px;
-font-size: 12px;
-color: #7a6640;
-line-height: 1.5;
-}
-
-.setup-note strong { font-weight: 500; }
-
-/* ── WIDGET ───────────────────────────────────── */
-#widget {
-display: none;
-flex-direction: column;
-min-height: 100vh;
-padding: 0;
-background: var(–bg);
-}
-
-.widget-header {
-background: var(–surface);
-border-bottom: 1px solid var(–border);
-padding: 16px 20px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-position: sticky;
-top: 0;
-z-index: 10;
-}
-
-.profile-area {
-display: flex;
-align-items: center;
-gap: 12px;
-}
-
-.profile-avatar {
-width: 42px;
-height: 42px;
-border-radius: 50%;
-background: linear-gradient(135deg, #f9a94b, #e1306c, #833ab4);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 17px;
-font-weight: 500;
-color: white;
-flex-shrink: 0;
-overflow: hidden;
-}
-
-.profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-.profile-name {
-font-weight: 500;
-font-size: 14.5px;
-letter-spacing: -0.1px;
-}
-
-.profile-handle {
-font-size: 12px;
-color: var(–text-secondary);
-}
-
-.header-actions {
-display: flex;
-align-items: center;
-gap: 8px;
-}
-
-.btn-sm {
-padding: 7px 14px;
-border-radius: 20px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 12.5px;
-font-weight: 500;
-cursor: pointer;
-transition: all 0.15s;
-border: 1.5px solid var(–border);
-background: transparent;
-color: var(–text-secondary);
-display: flex;
-align-items: center;
-gap: 5px;
-}
-
-.btn-sm:hover { border-color: var(–text-secondary); color: var(–text-primary); }
-
-.btn-sm.active {
-background: var(–text-primary);
-color: white;
-border-color: var(–text-primary);
-}
-
-/* ── STATUS FILTER ────────────────────────────── */
-.filter-bar {
-padding: 12px 20px;
-display: flex;
-align-items: center;
-gap: 8px;
-background: var(–surface);
-border-bottom: 1px solid var(–border-light);
-overflow-x: auto;
-scrollbar-width: none;
-}
-
-.filter-bar::-webkit-scrollbar { display: none; }
-
-.filter-label {
-font-size: 11px;
-font-weight: 500;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-color: var(–text-muted);
-white-space: nowrap;
-margin-right: 4px;
-}
-
-.filter-chip {
-padding: 5px 12px;
-border-radius: 20px;
-font-size: 12px;
-font-weight: 500;
-cursor: pointer;
-border: 1.5px solid var(–border);
-background: transparent;
-color: var(–text-secondary);
-font-family: ‘DM Sans’, sans-serif;
-white-space: nowrap;
-transition: all 0.15s;
-}
-
-.filter-chip:hover { border-color: var(–text-secondary); }
-
-.filter-chip.active {
-background: var(–text-primary);
-border-color: var(–text-primary);
-color: white;
-}
-
-.filter-chip.status-draft.active { background: #9b8ea0; border-color: #9b8ea0; }
-.filter-chip.status-scheduled.active { background: #6a9fbf; border-color: #6a9fbf; }
-.filter-chip.status-posted.active { background: #7ab899; border-color: #7ab899; }
-
-/* ── GRID ─────────────────────────────────────── */
-.grid-container {
-padding: 16px 20px 32px;
-flex: 1;
-}
-
-.grid-meta {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 14px;
-}
-
-.grid-count {
-font-size: 12px;
-color: var(–text-muted);
-}
-
-.grid-count span {
-color: var(–text-secondary);
-font-weight: 500;
-}
-
-.ig-grid {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 3px;
-border-radius: var(–radius);
-overflow: hidden;
-box-shadow: var(–shadow-md);
-}
-
-.grid-cell {
-aspect-ratio: 1 / 1;
-position: relative;
-overflow: hidden;
-background: var(–border-light);
-cursor: pointer;
-group: true;
-}
-
-.grid-cell img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-display: block;
-transition: transform 0.3s ease;
-}
-
-.grid-cell:hover img { transform: scale(1.04); }
-
-.grid-cell .cell-overlay {
-position: absolute;
-inset: 0;
-background: rgba(26,23,20,0);
-transition: background 0.25s ease;
-display: flex;
-align-items: flex-end;
-padding: 8px;
-}
-
-.grid-cell:hover .cell-overlay {
-background: rgba(26,23,20,0.45);
-}
-
-.cell-status-dot {
-position: absolute;
-top: 8px;
-right: 8px;
-width: 8px;
-height: 8px;
-border-radius: 50%;
-border: 1.5px solid rgba(255,255,255,0.8);
-}
-
-.cell-status-dot.draft { background: #c4afc9; }
-.cell-status-dot.scheduled { background: #8bc4e0; }
-.cell-status-dot.posted { background: #7ab899; }
-
-.cell-info {
-opacity: 0;
-transition: opacity 0.25s;
-width: 100%;
-}
-
-.grid-cell:hover .cell-info { opacity: 1; }
-
-.cell-date {
-font-size: 10.5px;
-color: rgba(255,255,255,0.9);
-font-weight: 500;
-line-height: 1;
-}
-
-.cell-title {
-font-size: 11px;
-color: rgba(255,255,255,0.75);
-margin-top: 2px;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
-}
-
-/* Empty cell */
-.grid-cell.empty {
-background: var(–border-light);
-cursor: default;
-}
-
-.grid-cell.empty::after {
-content: ‘’;
-position: absolute;
-inset: 0;
-background: repeating-linear-gradient(
-45deg,
-transparent,
-transparent 8px,
-rgba(0,0,0,0.025) 8px,
-rgba(0,0,0,0.025) 9px
-);
-}
-
-/* ── LIGHTBOX ─────────────────────────────────── */
-#lightbox {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(10,9,8,0.88);
-z-index: 100;
-align-items: center;
-justify-content: center;
-padding: 24px;
-backdrop-filter: blur(4px);
-animation: fadeIn 0.2s ease;
-}
-
-#lightbox.open { display: flex; }
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.lightbox-inner {
-background: var(–surface);
-border-radius: 16px;
-overflow: hidden;
-max-width: 520px;
-width: 100%;
-box-shadow: 0 24px 64px rgba(0,0,0,0.4);
-animation: slideUp 0.2s ease;
-}
-
-@keyframes slideUp {
-from { transform: translateY(12px); opacity: 0; }
-to { transform: translateY(0); opacity: 1; }
-}
-
-.lightbox-img {
-width: 100%;
-aspect-ratio: 1 / 1;
-object-fit: cover;
-display: block;
-background: var(–border-light);
-}
-
-.lightbox-body {
-padding: 18px 20px 20px;
-}
-
-.lightbox-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 10px;
-}
-
-.lightbox-status {
-font-size: 11px;
-font-weight: 500;
-padding: 3px 10px;
-border-radius: 12px;
-text-transform: capitalize;
-}
-
-.lightbox-status.draft { background: #f0ebf2; color: #7a5f85; }
-.lightbox-status.scheduled { background: #e8f3f9; color: #3d7ea6; }
-.lightbox-status.posted { background: #e8f5ef; color: #3d8a67; }
-
-.lightbox-close {
-width: 28px;
-height: 28px;
-border-radius: 50%;
-background: var(–border-light);
-border: none;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 16px;
-color: var(–text-secondary);
-transition: background 0.15s;
-}
-
-.lightbox-close:hover { background: var(–border); }
-
-.lightbox-title {
-font-size: 15px;
-font-weight: 500;
-margin-bottom: 4px;
-letter-spacing: -0.1px;
-}
-
-.lightbox-date {
-font-size: 12px;
-color: var(–text-muted);
-}
-
-.lightbox-caption {
-font-size: 13px;
-color: var(–text-secondary);
-margin-top: 10px;
-line-height: 1.55;
-border-top: 1px solid var(–border-light);
-padding-top: 10px;
-}
-
-/* ── LOADING / EMPTY / ERROR ──────────────────── */
-.state-panel {
-padding: 48px 20px;
-text-align: center;
-}
-
-.state-icon {
-font-size: 36px;
-margin-bottom: 14px;
-display: block;
-}
-
-.state-title {
-font-size: 16px;
-font-weight: 500;
-margin-bottom: 6px;
-}
-
-.state-body {
-font-size: 13px;
-color: var(–text-secondary);
-max-width: 300px;
-margin: 0 auto;
-line-height: 1.55;
-}
-
-.spinner {
-width: 32px;
-height: 32px;
-border: 2.5px solid var(–border);
-border-top-color: var(–accent);
-border-radius: 50%;
-animation: spin 0.7s linear infinite;
-margin: 0 auto 16px;
-}
-
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #faf9f7; color: #1a1714; min-height: 100vh; }
+
+#setup { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+.card { background: #fff; border: 1px solid #ede9e3; border-radius: 20px; padding: 36px; max-width: 440px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+.logo { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #f9a94b, #e1306c, #833ab4); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+h1 { font-size: 21px; font-weight: 500; margin-bottom: 6px; letter-spacing: -0.3px; }
+h1 em { font-style: italic; color: #c9a96e; }
+.subtitle { color: #7a746d; font-size: 13.5px; margin-bottom: 28px; }
+.field { margin-bottom: 16px; }
+label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: #7a746d; margin-bottom: 6px; }
+input { width: 100%; padding: 10px 13px; border: 1.5px solid #ede9e3; border-radius: 8px; background: #faf9f7; font-family: inherit; font-size: 13.5px; color: #1a1714; outline: none; }
+input:focus { border-color: #c9a96e; }
+.hint { font-size: 11px; color: #b8b0a8; margin-top: 4px; line-height: 1.4; }
+.btn { width: 100%; padding: 13px; background: #1a1714; color: white; border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 8px; }
+.btn:hover { background: #2d2926; }
+.note { margin-top: 18px; background: #f7f0e6; border-radius: 8px; padding: 11px 13px; font-size: 12px; color: #7a6640; line-height: 1.5; }
+.error-box { background: #fdf0f0; border: 1px solid #f5c6c6; border-radius: 8px; padding: 10px 13px; font-size: 12.5px; color: #c0392b; margin-bottom: 12px; display: none; }
+
+#widget { display: none; flex-direction: column; min-height: 100vh; }
+.header { background: #fff; border-bottom: 1px solid #ede9e3; padding: 13px 18px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+.profile { display: flex; align-items: center; gap: 10px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #f9a94b, #e1306c, #833ab4); display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+.profile-name { font-weight: 500; font-size: 13.5px; }
+.profile-sub { font-size: 11px; color: #7a746d; }
+.header-btns { display: flex; gap: 7px; }
+.btn-sm { padding: 6px 13px; border-radius: 20px; border: 1.5px solid #ede9e3; background: transparent; font-family: inherit; font-size: 12px; color: #7a746d; cursor: pointer; }
+.btn-sm:hover { border-color: #7a746d; }
+
+.filters { background: #fff; border-bottom: 1px solid #f5f2ee; padding: 9px 18px; display: flex; gap: 7px; overflow-x: auto; }
+.chip { padding: 5px 12px; border-radius: 20px; border: 1.5px solid #ede9e3; background: transparent; font-family: inherit; font-size: 12px; color: #7a746d; cursor: pointer; white-space: nowrap; }
+.chip.active { background: #1a1714; border-color: #1a1714; color: white; }
+.chip.draft.active { background: #9b8ea0; border-color: #9b8ea0; }
+.chip.scheduled.active { background: #6a9fbf; border-color: #6a9fbf; }
+.chip.posted.active { background: #7ab899; border-color: #7ab899; }
+
+.grid-wrap { padding: 16px 18px 32px; flex: 1; }
+.grid-meta { font-size: 12px; color: #b8b0a8; margin-bottom: 12px; }
+.grid-meta b { color: #7a746d; }
+.ig-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.cell { aspect-ratio: 1/1; position: relative; overflow: hidden; background: #f0ece6; cursor: pointer; }
+.cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+.cell:hover img { transform: scale(1.04); }
+.cell-overlay { position: absolute; inset: 0; background: transparent; transition: background 0.25s; display: flex; align-items: flex-end; padding: 7px; }
+.cell:hover .cell-overlay { background: rgba(26,23,20,0.42); }
+.cell-info { opacity: 0; transition: opacity 0.2s; }
+.cell:hover .cell-info { opacity: 1; }
+.cell-date { font-size: 10px; color: rgba(255,255,255,0.9); font-weight: 500; }
+.cell-title { font-size: 10.5px; color: rgba(255,255,255,0.75); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; }
+.dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.8); }
+.dot.draft { background: #c4afc9; }
+.dot.scheduled { background: #8bc4e0; }
+.dot.posted { background: #7ab899; }
+.cell.empty { cursor: default; }
+
+.state { text-align: center; padding: 48px 20px; }
+.state-icon { font-size: 32px; margin-bottom: 12px; }
+.state-title { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.state-body { font-size: 13px; color: #7a746d; max-width: 280px; margin: 0 auto; line-height: 1.5; }
+.spinner { width: 30px; height: 30px; border: 2.5px solid #ede9e3; border-top-color: #c9a96e; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 14px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── FOOTER ───────────────────────────────────── */
-.widget-footer {
-padding: 14px 20px;
-border-top: 1px solid var(–border-light);
-display: flex;
-align-items: center;
-justify-content: space-between;
-background: var(–surface);
-}
+#lightbox { display: none; position: fixed; inset: 0; background: rgba(10,9,8,0.85); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+#lightbox.open { display: flex; }
+.lb-inner { background: #fff; border-radius: 16px; overflow: hidden; max-width: 480px; width: 100%; }
+.lb-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+.lb-body { padding: 15px 18px 18px; }
+.lb-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+.lb-status { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 12px; text-transform: capitalize; }
+.lb-status.draft { background: #f0ebf2; color: #7a5f85; }
+.lb-status.scheduled { background: #e8f3f9; color: #3d7ea6; }
+.lb-status.posted { background: #e8f5ef; color: #3d8a67; }
+.lb-close { width: 28px; height: 28px; border-radius: 50%; background: #f5f2ee; border: none; cursor: pointer; font-size: 14px; color: #7a746d; }
+.lb-title { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+.lb-date { font-size: 12px; color: #b8b0a8; }
+.lb-caption { font-size: 13px; color: #7a746d; margin-top: 9px; padding-top: 9px; border-top: 1px solid #f5f2ee; line-height: 1.55; }
 
-.footer-left {
-font-size: 11.5px;
-color: var(–text-muted);
-}
-
-.footer-left span { color: var(–text-secondary); font-weight: 500; }
-
-.btn-settings {
-font-size: 12px;
-color: var(–text-muted);
-background: none;
-border: none;
-cursor: pointer;
-font-family: ‘DM Sans’, sans-serif;
-display: flex;
-align-items: center;
-gap: 4px;
-padding: 4px 6px;
-border-radius: 6px;
-transition: background 0.15s, color 0.15s;
-}
-
-.btn-settings:hover { background: var(–border-light); color: var(–text-secondary); }
-
-/* ── TOAST ────────────────────────────────────── */
-#toast {
-position: fixed;
-bottom: 20px;
-left: 50%;
-transform: translateX(-50%) translateY(20px);
-background: var(–text-primary);
-color: white;
-padding: 10px 20px;
-border-radius: 20px;
-font-size: 13px;
-font-weight: 500;
-opacity: 0;
-transition: all 0.3s ease;
-pointer-events: none;
-z-index: 200;
-white-space: nowrap;
-}
-
-#toast.show {
-opacity: 1;
-transform: translateX(-50%) translateY(0);
-}
+#toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1a1714; color: white; padding: 9px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 200; white-space: nowrap; }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 
 </head>
 <body>
 
-<!-- ── SETUP SCREEN ───────────────────────────────── -->
-
-<div id="setup-screen">
-  <div class="setup-card">
-    <div class="setup-logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+<div id="setup">
+  <div class="card">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+        <rect x="2" y="2" width="20" height="20" rx="5"/>
         <circle cx="12" cy="12" r="4"/>
         <circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none"/>
       </svg>
     </div>
+    <h1>Your IG Grid, <em>inside</em> Notion</h1>
+    <p class="subtitle">Connect your content database and preview your feed before anything goes live.</p>
 
 ```
-<h1 class="setup-title">Your IG Grid, <em>inside</em> Notion</h1>
-<p class="setup-subtitle">Connect your content database and preview your feed before anything goes live.</p>
-
-<div class="field-group">
+<div class="field">
   <label>Notion Integration Token</label>
-  <input type="password" id="input-token" placeholder="secret_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false" />
-  <p class="field-hint">
-    Create a free integration at <a href="https://www.notion.so/my-integrations" target="_blank">notion.so/my-integrations</a> and copy the Internal Integration Secret. Make sure to share your database with the integration.
-  </p>
+  <input type="password" id="f-token" placeholder="secret_xxxxxxxxxxxx" autocomplete="off">
+  <p class="hint">From notion.so/my-integrations — share your database with the integration first.</p>
 </div>
-
-<div class="field-group">
+<div class="field">
   <label>Database ID</label>
-  <input type="text" id="input-db" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false" />
-  <p class="field-hint">
-    The 32-character ID from your database URL: notion.so/…/<strong>DATABASE_ID</strong>?v=…
-  </p>
+  <input type="text" id="f-db" placeholder="32-character ID from your database URL" autocomplete="off">
+  <p class="hint">The ID after the last / in your URL, before ?v=</p>
+</div>
+<div class="field">
+  <label>Image Property Name <span style="font-weight:400;text-transform:none;font-size:10px">(optional)</span></label>
+  <input type="text" id="f-img" placeholder="Cover Image" autocomplete="off">
+  <p class="hint">Name of your Files & Media property. Leave blank to use page covers.</p>
 </div>
 
-<div class="field-group">
-  <label>Image Property Name <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional)</span></label>
-  <input type="text" id="input-image-prop" placeholder="Cover Image" autocomplete="off" />
-  <p class="field-hint">The name of the Files & Media property in your database that holds post images. Leave blank to use the page cover.</p>
-</div>
-
-<button class="btn-primary" id="btn-connect" onclick="connectWidget()">Connect & Preview Grid →</button>
-
-<hr class="setup-divider">
-
-<div class="setup-note">
-  <strong>🔒 Private by design.</strong> Your token and database ID are saved only in your browser's local storage — they never leave your device or get sent to any server. The widget calls Notion's API directly.
-</div>
+<div class="error-box" id="err-box"></div>
+<button class="btn" id="btn-connect">Connect & Preview Grid →</button>
+<div class="note">🔒 <strong>Private by design.</strong> Your token is saved only in your browser — never sent anywhere else.</div>
 ```
 
   </div>
 </div>
-
-<!-- ── WIDGET ─────────────────────────────────────── -->
 
 <div id="widget">
-  <div class="widget-header">
-    <div class="profile-area">
-      <div class="profile-avatar" id="profile-avatar">✦</div>
+  <div class="header">
+    <div class="profile">
+      <div class="avatar">✦</div>
       <div>
-        <div class="profile-name" id="profile-name">Content Feed</div>
-        <div class="profile-handle" id="profile-handle">Loading…</div>
+        <div class="profile-name">Content Feed</div>
+        <div class="profile-sub" id="post-count">Loading…</div>
       </div>
     </div>
-    <div class="header-actions">
-      <button class="btn-sm" id="btn-refresh" onclick="loadGrid()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-        Refresh
-      </button>
+    <div class="header-btns">
+      <button class="btn-sm" id="btn-refresh">↻ Refresh</button>
+      <button class="btn-sm" id="btn-settings">Settings</button>
     </div>
   </div>
 
-  <div class="filter-bar" id="filter-bar">
-    <span class="filter-label">Show</span>
-    <button class="filter-chip active" data-status="all" onclick="setFilter('all', this)">All</button>
-    <button class="filter-chip status-draft" data-status="draft" onclick="setFilter('draft', this)">Draft</button>
-    <button class="filter-chip status-scheduled" data-status="scheduled" onclick="setFilter('scheduled', this)">Scheduled</button>
-    <button class="filter-chip status-posted" data-status="posted" onclick="setFilter('posted', this)">Posted</button>
+  <div class="filters">
+    <button class="chip active" data-filter="all">All</button>
+    <button class="chip draft" data-filter="draft">Draft</button>
+    <button class="chip scheduled" data-filter="scheduled">Scheduled</button>
+    <button class="chip posted" data-filter="posted">Posted</button>
   </div>
 
-  <div class="grid-container">
-    <div class="grid-meta">
-      <div class="grid-count" id="grid-count"></div>
-    </div>
-    <div id="grid-content">
-      <div class="state-panel">
-        <div class="spinner"></div>
-        <p class="state-body">Loading your content…</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="widget-footer">
-    <div class="footer-left" id="footer-db"></div>
-    <button class="btn-settings" onclick="showSettings()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      Settings
-    </button>
+  <div class="grid-wrap">
+    <div class="grid-meta" id="grid-meta"></div>
+    <div id="grid-content"></div>
   </div>
 </div>
 
-<!-- ── LIGHTBOX ────────────────────────────────────── -->
-
-<div id="lightbox" onclick="closeLightbox(event)">
-  <div class="lightbox-inner">
-    <img class="lightbox-img" id="lb-img" src="" alt="">
-    <div class="lightbox-body">
-      <div class="lightbox-header">
-        <span class="lightbox-status" id="lb-status">Draft</span>
-        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+<div id="lightbox">
+  <div class="lb-inner">
+    <img class="lb-img" id="lb-img" src="" alt="">
+    <div class="lb-body">
+      <div class="lb-top">
+        <span class="lb-status" id="lb-status"></span>
+        <button class="lb-close" id="lb-close">✕</button>
       </div>
-      <div class="lightbox-title" id="lb-title"></div>
-      <div class="lightbox-date" id="lb-date"></div>
-      <div class="lightbox-caption" id="lb-caption"></div>
+      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-date" id="lb-date"></div>
+      <div class="lb-caption" id="lb-caption"></div>
     </div>
   </div>
 </div>
@@ -744,367 +174,310 @@ transform: translateX(-50%) translateY(0);
 <div id="toast"></div>
 
 <script>
-// ── CONFIG ─────────────────────────────────────────
-const STORAGE_KEY = 'ig_widget_config';
-let config = {};
-let allPosts = [];
-let currentFilter = 'all';
+var CONFIG_KEY = 'igw_cfg_v3';
+var config = null;
+var allPosts = [];
+var currentFilter = 'all';
+var filteredPosts = [];
 
-// Notion API proxied via a CORS-friendly approach
-// NOTE: Notion API blocks direct browser calls (CORS). Users must either:
-// 1. Use a small proxy (we provide a ready-made Netlify function template)
-// 2. Or use the Notion public share approach
-// For demo we show how to wire it up and provide a demo mode.
+// Load saved config
+try {
+  var saved = localStorage.getItem(CONFIG_KEY);
+  if (saved) config = JSON.parse(saved);
+} catch(e) {}
 
-const CORS_PROXY = 'https://corsproxy.io/?';
+// Init
+if (config && config.token && config.databaseId) {
+  showWidget();
+  loadGrid();
+}
 
-// ── INIT ────────────────────────────────────────────
-(function init() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    try {
-      config = JSON.parse(saved);
-      if (config.token && config.databaseId) {
-        showWidget();
-        loadGrid();
-        return;
-      }
-    } catch(e) {}
-  }
-
-  // Pre-fill from URL params (e.g. notion embed with ?token=&db=)
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('token')) document.getElementById('input-token').value = params.get('token');
-  if (params.get('db')) document.getElementById('input-db').value = params.get('db');
-  if (params.get('imgprop')) document.getElementById('input-image-prop').value = params.get('imgprop');
-})();
-
-// ── CONNECT ─────────────────────────────────────────
-async function connectWidget() {
-  const token = document.getElementById('input-token').value.trim();
-  const dbId = document.getElementById('input-db').value.trim().replace(/-/g, '');
-  const imgProp = document.getElementById('input-image-prop').value.trim();
+// Connect button
+document.getElementById('btn-connect').addEventListener('click', function() {
+  var token = document.getElementById('f-token').value.trim();
+  var dbId = document.getElementById('f-db').value.trim().replace(/-/g, '');
+  var imgProp = document.getElementById('f-img').value.trim();
 
   if (!token || !dbId) {
-    showToast('Please enter both your token and database ID');
+    showError('Please enter your token and database ID.');
     return;
   }
 
-  const btn = document.getElementById('btn-connect');
-  btn.textContent = 'Connecting…';
-  btn.disabled = true;
+  config = { token: token, databaseId: dbId, imageProp: imgProp || null };
+  hideError();
+  document.getElementById('btn-connect').textContent = 'Connecting…';
+  document.getElementById('btn-connect').disabled = true;
 
-  config = { token, databaseId: dbId, imageProp: imgProp || null };
+  fetchNotion(function(err, posts) {
+    document.getElementById('btn-connect').textContent = 'Connect & Preview Grid →';
+    document.getElementById('btn-connect').disabled = false;
+    if (err) {
+      showError('Could not connect: ' + err + '. Check your token and make sure the integration is shared with the database.');
+    } else {
+      try { localStorage.setItem(CONFIG_KEY, JSON.stringify(config)); } catch(e) {}
+      allPosts = posts;
+      showWidget();
+      renderGrid();
+    }
+  });
+});
 
-  const ok = await loadGrid(true);
-  if (ok) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-    showWidget();
-  } else {
-    btn.textContent = 'Connect & Preview Grid →';
-    btn.disabled = false;
-  }
-}
+document.getElementById('btn-refresh').addEventListener('click', function() {
+  document.getElementById('grid-content').innerHTML = '<div class="state"><div class="spinner"></div><p class="state-body">Refreshing…</p></div>';
+  loadGrid(true);
+});
 
-// ── SHOW WIDGET ──────────────────────────────────────
-function showWidget() {
-  document.getElementById('setup-screen').style.display = 'none';
-  document.getElementById('widget').style.display = 'flex';
-
-  const dbShort = config.databaseId.slice(0,8) + '…';
-  document.getElementById('footer-db').innerHTML = `Database <span>${dbShort}</span>`;
-}
-
-function showSettings() {
-  localStorage.removeItem(STORAGE_KEY);
+document.getElementById('btn-settings').addEventListener('click', function() {
+  try { localStorage.removeItem(CONFIG_KEY); } catch(e) {}
   location.reload();
-}
+});
 
-// ── LOAD GRID ────────────────────────────────────────
-async function loadGrid(isFirstLoad = false) {
-  renderLoading();
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
 
-  try {
-    const url = `${CORS_PROXY}https://api.notion.com/v1/databases/${config.databaseId}/query`;
-
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${config.token}`,
-        'Notion-Version': '2022-06-28',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sorts: [{ timestamp: 'created_time', direction: 'descending' }],
-        page_size: 60
-      })
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `API error ${res.status}`);
-    }
-
-    const data = await res.json();
-    allPosts = parsePages(data.results);
+// Filter chips
+document.querySelectorAll('.chip').forEach(function(chip) {
+  chip.addEventListener('click', function() {
+    document.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('active'); });
+    chip.classList.add('active');
+    currentFilter = chip.getAttribute('data-filter');
     renderGrid();
-    updateProfileHeader(data.results);
+  });
+});
 
-    if (!isFirstLoad) showToast('Grid refreshed ✓');
-    return true;
-
-  } catch (err) {
-    console.error(err);
-    renderError(err.message);
-    return false;
-  }
+function showWidget() {
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('widget').style.display = 'flex';
 }
 
-// ── PARSE PAGES ──────────────────────────────────────
-function parsePages(pages) {
-  return pages.map(page => {
-    const props = page.properties || {};
-
-    // Title
-    let title = 'Untitled';
-    for (const key of ['Name', 'Title', 'Post', 'Caption', ...Object.keys(props)]) {
-      const p = props[key];
-      if (p?.type === 'title' && p.title?.[0]?.plain_text) {
-        title = p.title[0].plain_text;
-        break;
-      }
+function loadGrid(isRefresh) {
+  if (!isRefresh) {
+    document.getElementById('grid-content').innerHTML = '<div class="state"><div class="spinner"></div><p class="state-body">Fetching your content…</p></div>';
+  }
+  fetchNotion(function(err, posts) {
+    if (err) {
+      document.getElementById('grid-content').innerHTML = '<div class="state"><div class="state-icon">⚠️</div><div class="state-title">Couldn\'t load posts</div><p class="state-body">' + err + '</p></div>';
+    } else {
+      allPosts = posts;
+      renderGrid();
+      if (isRefresh) showToast('Refreshed ✓');
     }
-
-    // Status
-    let status = 'draft';
-    for (const key of ['Status', 'Stage', 'State', ...Object.keys(props)]) {
-      const p = props[key];
-      if (p?.type === 'select' && p.select?.name) {
-        const val = p.select.name.toLowerCase();
-        if (val.includes('post')) { status = 'posted'; break; }
-        if (val.includes('schedul') || val.includes('ready') || val.includes('publish')) { status = 'scheduled'; break; }
-        if (val.includes('draft') || val.includes('idea') || val.includes('wip')) { status = 'draft'; break; }
-        status = val;
-        break;
-      }
-      if (p?.type === 'status' && p.status?.name) {
-        const val = p.status.name.toLowerCase();
-        if (val.includes('post') || val.includes('live') || val.includes('done')) { status = 'posted'; break; }
-        if (val.includes('schedul') || val.includes('ready')) { status = 'scheduled'; break; }
-        status = 'draft'; break;
-      }
-    }
-
-    // Date
-    let date = null;
-    for (const key of ['Date', 'Scheduled', 'Publish Date', 'Post Date', 'Go Live', ...Object.keys(props)]) {
-      const p = props[key];
-      if (p?.type === 'date' && p.date?.start) { date = p.date.start; break; }
-    }
-
-    // Caption / body
-    let caption = null;
-    for (const key of ['Caption', 'Description', 'Copy', 'Body', ...Object.keys(props)]) {
-      const p = props[key];
-      if (p?.type === 'rich_text' && p.rich_text?.[0]?.plain_text) {
-        caption = p.rich_text[0].plain_text;
-        break;
-      }
-    }
-
-    // Image — from named property or page cover
-    let imageUrl = null;
-
-    if (config.imageProp && props[config.imageProp]) {
-      const imgProp = props[config.imageProp];
-      if (imgProp.type === 'files' && imgProp.files?.length) {
-        const f = imgProp.files[0];
-        imageUrl = f.type === 'external' ? f.external?.url : f.file?.url;
-      }
-      if (imgProp.type === 'url' && imgProp.url) {
-        imageUrl = imgProp.url;
-      }
-    }
-
-    // Try all files properties if no named prop
-    if (!imageUrl) {
-      for (const key of Object.keys(props)) {
-        const p = props[key];
-        if (p?.type === 'files' && p.files?.length) {
-          const f = p.files[0];
-          const url = f.type === 'external' ? f.external?.url : f.file?.url;
-          if (url) { imageUrl = url; break; }
-        }
-        if (p?.type === 'url' && p.url && (p.url.match(/\.(jpg|jpeg|png|gif|webp)/i) || p.url.includes('canva') || p.url.includes('cdn'))) {
-          imageUrl = p.url; break;
-        }
-      }
-    }
-
-    // Page cover as last resort
-    if (!imageUrl && page.cover) {
-      imageUrl = page.cover.type === 'external' ? page.cover.external?.url : page.cover.file?.url;
-    }
-
-    return { id: page.id, title, status, date, caption, imageUrl };
   });
 }
 
-// ── RENDER ───────────────────────────────────────────
-function renderLoading() {
-  document.getElementById('grid-content').innerHTML = `
-    <div class="state-panel">
-      <div class="spinner"></div>
-      <p class="state-body">Fetching your content…</p>
-    </div>`;
-  document.getElementById('grid-count').textContent = '';
+function fetchNotion(cb) {
+  var url = 'https://corsproxy.io/?' + encodeURIComponent('https://api.notion.com/v1/databases/' + config.databaseId + '/query');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + config.token);
+  xhr.setRequestHeader('Notion-Version', '2022-06-28');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.timeout = 15000;
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    if (xhr.status === 200) {
+      try {
+        var data = JSON.parse(xhr.responseText);
+        cb(null, parsePages(data.results || []));
+      } catch(e) {
+        cb('Could not parse response');
+      }
+    } else if (xhr.status === 0) {
+      // CORS proxy failed, try alternative
+      fetchWithAltProxy(cb);
+    } else {
+      try {
+        var errData = JSON.parse(xhr.responseText);
+        cb(errData.message || 'API error ' + xhr.status);
+      } catch(e) {
+        cb('API error ' + xhr.status);
+      }
+    }
+  };
+  xhr.ontimeout = function() { fetchWithAltProxy(cb); };
+  xhr.onerror = function() { fetchWithAltProxy(cb); };
+  xhr.send(JSON.stringify({ sorts: [{ timestamp: 'created_time', direction: 'descending' }], page_size: 60 }));
 }
 
-function renderError(msg) {
-  document.getElementById('grid-content').innerHTML = `
-    <div class="state-panel">
-      <span class="state-icon">⚠️</span>
-      <div class="state-title">Couldn't load posts</div>
-      <p class="state-body">${escHtml(msg)}<br><br>Check that your token is correct and that the integration has been shared with the database.</p>
-    </div>`;
+function fetchWithAltProxy(cb) {
+  var url = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://api.notion.com/v1/databases/' + config.databaseId + '/query');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + config.token);
+  xhr.setRequestHeader('Notion-Version', '2022-06-28');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.timeout = 15000;
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    if (xhr.status === 200) {
+      try {
+        var data = JSON.parse(xhr.responseText);
+        cb(null, parsePages(data.results || []));
+      } catch(e) {
+        cb('Could not parse response. Check your token and database ID.');
+      }
+    } else {
+      cb('Connection failed. Check your token is correct and the integration is shared with the database.');
+    }
+  };
+  xhr.ontimeout = function() { cb('Request timed out. Try again.'); };
+  xhr.onerror = function() { cb('Connection failed. Check your token and database ID.'); };
+  xhr.send(JSON.stringify({ sorts: [{ timestamp: 'created_time', direction: 'descending' }], page_size: 60 }));
+}
+
+function parsePages(pages) {
+  return pages.map(function(page) {
+    var props = page.properties || {};
+    var title = 'Untitled';
+    var keys = ['Post Title', 'Name', 'Title', 'Post'].concat(Object.keys(props));
+    for (var i = 0; i < keys.length; i++) {
+      var p = props[keys[i]];
+      if (p && p.type === 'title' && p.title && p.title[0]) { title = p.title[0].plain_text; break; }
+    }
+
+    var status = 'draft';
+    var skeys = ['Status', 'Stage'].concat(Object.keys(props));
+    for (var i = 0; i < skeys.length; i++) {
+      var p = props[skeys[i]];
+      var val = (p && ((p.select && p.select.name) || (p.status && p.status.name)) || '').toLowerCase();
+      if (!val) continue;
+      if (val.indexOf('post') > -1 || val.indexOf('live') > -1 || val.indexOf('done') > -1) { status = 'posted'; break; }
+      if (val.indexOf('schedul') > -1 || val.indexOf('ready') > -1) { status = 'scheduled'; break; }
+      status = 'draft'; break;
+    }
+
+    var date = null;
+    var dkeys = ['Publish Date', 'Date', 'Scheduled'].concat(Object.keys(props));
+    for (var i = 0; i < dkeys.length; i++) {
+      var p = props[dkeys[i]];
+      if (p && p.type === 'date' && p.date && p.date.start) { date = p.date.start; break; }
+    }
+
+    var caption = null;
+    var ckeys = ['Caption', 'Description', 'Copy'].concat(Object.keys(props));
+    for (var i = 0; i < ckeys.length; i++) {
+      var p = props[ckeys[i]];
+      if (p && p.type === 'rich_text' && p.rich_text && p.rich_text[0]) { caption = p.rich_text[0].plain_text; break; }
+    }
+
+    var imageUrl = null;
+    if (config.imageProp && props[config.imageProp]) {
+      var ip = props[config.imageProp];
+      if (ip.type === 'files' && ip.files && ip.files.length) {
+        var f = ip.files[0];
+        imageUrl = f.type === 'external' ? f.external.url : f.file.url;
+      }
+    }
+    if (!imageUrl) {
+      var pkeys = Object.keys(props);
+      for (var i = 0; i < pkeys.length; i++) {
+        var p = props[pkeys[i]];
+        if (p && p.type === 'files' && p.files && p.files.length) {
+          var f = p.files[0];
+          imageUrl = f.type === 'external' ? f.external.url : f.file.url;
+          if (imageUrl) break;
+        }
+      }
+    }
+    if (!imageUrl && page.cover) {
+      imageUrl = page.cover.type === 'external' ? page.cover.external.url : (page.cover.file ? page.cover.file.url : null);
+    }
+
+    return { id: page.id, title: title, status: status, date: date, caption: caption, imageUrl: imageUrl };
+  });
 }
 
 function renderGrid() {
-  const filtered = currentFilter === 'all'
-    ? allPosts
-    : allPosts.filter(p => p.status === currentFilter);
+  filteredPosts = currentFilter === 'all' ? allPosts : allPosts.filter(function(p) { return p.status === currentFilter; });
+  document.getElementById('post-count').textContent = allPosts.length + ' posts in database';
+  document.getElementById('grid-meta').innerHTML = '<b>' + filteredPosts.length + '</b> post' + (filteredPosts.length !== 1 ? 's' : '') + (currentFilter !== 'all' ? ' · ' + currentFilter : '');
 
-  document.getElementById('grid-count').innerHTML =
-    `<span>${filtered.length}</span> post${filtered.length !== 1 ? 's' : ''}${currentFilter !== 'all' ? ` · ${currentFilter}` : ''}`;
-
-  if (filtered.length === 0) {
-    document.getElementById('grid-content').innerHTML = `
-      <div class="state-panel">
-        <span class="state-icon">📭</span>
-        <div class="state-title">No posts here yet</div>
-        <p class="state-body">No ${currentFilter === 'all' ? '' : currentFilter + ' '}posts found in your database. Add some content and hit refresh.</p>
-      </div>`;
+  if (filteredPosts.length === 0) {
+    document.getElementById('grid-content').innerHTML = '<div class="state"><div class="state-icon">📭</div><div class="state-title">No posts yet</div><p class="state-body">Add content to your database and hit refresh.</p></div>';
     return;
   }
 
-  // Pad to fill last row of 3
-  const padded = [...filtered];
+  var padded = filteredPosts.slice();
   while (padded.length % 3 !== 0) padded.push(null);
 
-  const cells = padded.map((post, i) => {
-    if (!post) return `<div class="grid-cell empty"></div>`;
-
-    const statusDot = `<div class="cell-status-dot ${post.status}"></div>`;
-    const dateStr = post.date ? formatDate(post.date) : '';
-
+  var html = '<div class="ig-grid">';
+  padded.forEach(function(post, i) {
+    if (!post) { html += '<div class="cell empty"></div>'; return; }
+    var dateStr = post.date ? fmtDate(post.date) : '';
+    html += '<div class="cell" data-idx="' + i + '">';
     if (post.imageUrl) {
-      return `
-        <div class="grid-cell" onclick="openLightbox(${i})">
-          <img src="${escAttr(post.imageUrl)}" alt="${escAttr(post.title)}" loading="lazy" onerror="this.style.display='none'">
-          <div class="cell-overlay">
-            <div class="cell-info">
-              ${dateStr ? `<div class="cell-date">${escHtml(dateStr)}</div>` : ''}
-              <div class="cell-title">${escHtml(post.title)}</div>
-            </div>
-          </div>
-          ${statusDot}
-        </div>`;
+      html += '<img src="' + esc(post.imageUrl) + '" alt="' + esc(post.title) + '" loading="lazy">';
     } else {
-      return `
-        <div class="grid-cell" onclick="openLightbox(${i})" style="background:var(--border-light); display:flex; align-items:center; justify-content:center;">
-          <div style="text-align:center; padding:12px;">
-            <div style="font-size:22px; margin-bottom:6px;">🖼️</div>
-            <div style="font-size:10px; color:var(--text-muted); line-height:1.4; max-width:80px;">${escHtml(post.title)}</div>
-          </div>
-          <div class="cell-overlay">
-            <div class="cell-info">
-              ${dateStr ? `<div class="cell-date">${escHtml(dateStr)}</div>` : ''}
-            </div>
-          </div>
-          ${statusDot}
-        </div>`;
+      html += '<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px"><div style="font-size:20px;margin-bottom:4px">🖼️</div><div style="font-size:9px;color:#b8b0a8;text-align:center;line-height:1.3">' + esc(post.title) + '</div></div>';
     }
+    html += '<div class="cell-overlay"><div class="cell-info">';
+    if (dateStr) html += '<div class="cell-date">' + esc(dateStr) + '</div>';
+    html += '<div class="cell-title">' + esc(post.title) + '</div></div></div>';
+    html += '<div class="dot ' + post.status + '"></div>';
+    html += '</div>';
   });
+  html += '</div>';
+  document.getElementById('grid-content').innerHTML = html;
 
-  document.getElementById('grid-content').innerHTML = `<div class="ig-grid">${cells.join('')}</div>`;
-
-  // Store filtered for lightbox index
-  window._filteredPosts = filtered;
+  document.querySelectorAll('.cell:not(.empty)').forEach(function(cell) {
+    cell.addEventListener('click', function() {
+      var idx = parseInt(this.getAttribute('data-idx'));
+      openLightbox(filteredPosts[idx]);
+    });
+  });
 }
 
-// ── PROFILE HEADER ────────────────────────────────────
-function updateProfileHeader(pages) {
-  if (!pages.length) return;
-  const firstTitle = Object.values(pages[0].properties || {}).find(p => p.type === 'title');
-  if (firstTitle?.title?.[0]?.plain_text) {
-    // Just show database info
-  }
-  const count = allPosts.length;
-  document.getElementById('profile-handle').textContent = `${count} post${count !== 1 ? 's' : ''} in database`;
-  document.getElementById('profile-avatar').textContent = '✦';
-}
-
-// ── FILTER ────────────────────────────────────────────
-function setFilter(status, el) {
-  currentFilter = status;
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderGrid();
-}
-
-// ── LIGHTBOX ──────────────────────────────────────────
-function openLightbox(idx) {
-  const posts = window._filteredPosts || allPosts;
-  const post = posts[idx];
-  if (!post) return;
-
+function openLightbox(post) {
+  var lb = document.getElementById('lightbox');
   document.getElementById('lb-img').src = post.imageUrl || '';
   document.getElementById('lb-img').style.display = post.imageUrl ? 'block' : 'none';
   document.getElementById('lb-title').textContent = post.title;
-  document.getElementById('lb-date').textContent = post.date ? formatDate(post.date, true) : 'No date set';
-
-  const statusEl = document.getElementById('lb-status');
-  statusEl.textContent = post.status;
-  statusEl.className = `lightbox-status ${post.status}`;
-
-  const capEl = document.getElementById('lb-caption');
-  capEl.textContent = post.caption || '';
-  capEl.style.display = post.caption ? 'block' : 'none';
-
-  document.getElementById('lightbox').classList.add('open');
+  document.getElementById('lb-date').textContent = post.date ? fmtDate(post.date, true) : 'No date set';
+  var s = document.getElementById('lb-status');
+  s.textContent = post.status;
+  s.className = 'lb-status ' + post.status;
+  var cap = document.getElementById('lb-caption');
+  cap.textContent = post.caption || '';
+  cap.style.display = post.caption ? 'block' : 'none';
+  lb.classList.add('open');
 }
 
-function closeLightbox(e) {
-  if (!e || e.target === document.getElementById('lightbox') || e.currentTarget?.classList?.contains('lightbox-close')) {
-    document.getElementById('lightbox').classList.remove('open');
-  }
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox({}); });
-
-// ── TOAST ─────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-// ── UTILS ─────────────────────────────────────────────
-function formatDate(dateStr, long = false) {
+function fmtDate(str, long) {
   try {
-    const d = new Date(dateStr);
+    var d = new Date(str);
     if (long) return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-  } catch { return dateStr; }
+  } catch(e) { return str; }
 }
 
-function escHtml(str) {
+function esc(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function escAttr(str) { return escHtml(str); }
+function showError(msg) {
+  var b = document.getElementById('err-box');
+  b.textContent = msg;
+  b.style.display = 'block';
+}
+
+function hideError() {
+  document.getElementById('err-box').style.display = 'none';
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
 </script>
 
 </body>
